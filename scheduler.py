@@ -2,9 +2,8 @@ import time
 
 import schedule
 
-
 if __name__ == "__main__":
-    schedule.every().sunday.at("20:00").do(update_code_base.do)
+    # schedule.every().day.at("02:00").do(transfer_monthly_expenses.do)
 
     while True:
         schedule.run_pending()
