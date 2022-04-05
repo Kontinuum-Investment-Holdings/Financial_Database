@@ -20,9 +20,10 @@ def do() -> None:
     if excess_funds < 0:
         raise InsufficientFundsException(f"Insufficient funds for monthly expenses\nRequired: NZD {str(-excess_funds)}")
 
-    finance_hub_transfer: Transfer = Transfer.execute(finance_database.transfers.finance_hub.amount, Currency.NZD, Currency.NZD, finance_database.transfers.finance_hub.account_number, "Hub", ProfileTypes.PERSONAL)
-    needs_transfer: Transfer = Transfer.execute(finance_database.transfers.needs.amount, Currency.NZD, Currency.NZD, finance_database.transfers.needs.account_number, "Needs", ProfileTypes.PERSONAL)
+    finance_hub_transfer: Transfer = Transfer.execute(finance_database.transfers.finance_hub.amount, Currency.NZD, Currency.NZD, finance_database.transfers.finance_hub.account_number, "Finance Hub", ProfileTypes.PERSONAL)
     savings_transfer: Transfer = Transfer.execute((finance_database.transfers.savings.amount + excess_funds), Currency.NZD, Currency.NZD, finance_database.transfers.savings.account_number, "Savings", ProfileTypes.PERSONAL)
+    if finance_database.transfers.needs.amount > 0:
+        needs_transfer: Transfer = Transfer.execute(finance_database.transfers.needs.amount, Currency.NZD, Currency.NZD, finance_database.transfers.needs.account_number, "Needs", ProfileTypes.PERSONAL)
 
 
 if __name__ == "__main__":
