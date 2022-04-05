@@ -1,3 +1,1 @@
 schedule
-python-dateutil
-dataclass_csv
