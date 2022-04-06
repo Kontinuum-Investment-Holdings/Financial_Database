@@ -10,6 +10,7 @@ zip -r code.zip .
 EC2_DATA=$(aws ec2 run-instances --image-id ami-0801a1e12f4a9ccc0 --count 1 --instance-type t2.nano --key-name GitHub_Key_Pair --security-group-ids sg-090a72dbba83bd99c --subnet-id subnet-0b3152f9a9f534b9d)
 INSTANCE_ID=$(echo $EC2_DATA | jq -r '.Instances[0].InstanceId')
 IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=instance-id,Values=$INSTANCE_ID" | jq -r '.Reservations[0].Instances[0].PublicIpAddress')
+STATE=$(aws ec2 describe-instances --filters "Name=instance-id,Values=$INSTANCE_ID" | jq -r '.Reservations[0].Instances[0].State.Name')
 
 #	Download and setup key
 aws s3 cp s3://kih-github/GitHub_Key_Pair.pem .
