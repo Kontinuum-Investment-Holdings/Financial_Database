@@ -68,6 +68,6 @@ for function in $LAMBDA_FUNCTION_NAMES
 do
   mv code.zip $function.zip
   aws s3 cp $function.zip s3://kih-github/code/
-  aws lambda update-function-code --function-name $function --s3-bucket s3://kih-github/code/ --s3-key code/$function.zip
+  aws lambda update-function-code --function-name $function --s3-bucket kih-github --s3-key code/$function.zip
   mv $function.zip code.zip
 done
