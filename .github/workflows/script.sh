@@ -24,6 +24,7 @@ do
 	sleep 1
 done
 echo "Server started"
+sleep 10
 
 #	Upload file to EC2 server
 sftp -i GitHub_Key_Pair.pem  -o StrictHostKeyChecking=no ec2-user@$IP_ADDRESS << EOF
