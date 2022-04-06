@@ -11,37 +11,18 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    env:
-      # Set Lambda Function Name Here, space separated
-      LAMBDA_FUNCTION_NAMES: "Financial_Database"
-      # Set Lambda Function Name Here
-
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_DEFAULT_REGION: ap-southeast-1
-      AWS_DEFAULT_OUTPUT: table
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
 
       # Set up required applications
-      - run: sudo apt-get install zip
-      - run: sudo apt-get install awscli
+      - run: chmod +x .github/workflows/script.sh && bash -x .github/workflows/script.sh
+        env:
+          # Set Lambda Function Name Here, space separated
+          LAMBDA_FUNCTION_NAMES: "Financial_Database"
+          # Set Lambda Function Name Here
 
-      # Setup dependencies
-      - run: wget https://github.com/Kontinuum-Investment-Holdings/KIH_API/archive/refs/heads/main.zip
-      - run: unzip main.zip -d .
-      - run: pip install -r requirements.txt --target .
-      - run: pip install -r KIH_API-main/requirements.txt --target .
-      - run: mv KIH_API-main/* .
-
-      # Clean up and create ZIP file
-      - run: rm main.zip
-      - run: rm -rf KIH_API-main
-      - run: rm requirements.txt && rm -rf .github && rm mypy.ini && rm -rf __pycache__ && rm -rf .git
-      - run: zip -r code.zip .
-
-      # Deploy to AWS Lambda
-      - run: sudo apt-get install awscli
-      - run: for function in $LAMBDA_FUNCTION_NAMES; do aws lambda update-function-code --function-name $function --zip-file fileb://code.zip; done
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-southeast-1
+          AWS_DEFAULT_OUTPUT: json
