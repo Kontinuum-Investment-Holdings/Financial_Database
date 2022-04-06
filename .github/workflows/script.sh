@@ -28,15 +28,15 @@ ssh ec2-user@$IP_ADDRESS -i GitHub_Key_Pair.pem -o StrictHostKeyChecking=no << E
 	sudo yum -y install zip
 	sudo yum -y install unzip
 	sudo yum -y install python
-	sudo yum -y install pip
+	sudo yum -y install python-pip
 
 	unzip code.zip
 	rm code.zip
 
 	wget https://github.com/Kontinuum-Investment-Holdings/KIH_API/archive/refs/heads/main.zip
 	unzip main.zip -d .
-	pip install -r requirements.txt --target .
-	pip install -r KIH_API-main/requirements.txt --target .
+	pip install -r requirements.txt -t .
+	pip install -r KIH_API-main/requirements.txt -t .
 	mv KIH_API-main/* .
 
 	rm main.zip
