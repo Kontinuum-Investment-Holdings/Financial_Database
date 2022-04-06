@@ -3,7 +3,7 @@ name: deploy_to_lambda
 on:
   push:
     branches:
-      - master
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
