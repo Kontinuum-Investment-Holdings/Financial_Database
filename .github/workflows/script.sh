@@ -15,6 +15,15 @@ IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=instance-id,Values=$INST
 aws s3 cp s3://kih-github/GitHub_Key_Pair.pem .
 chmod 400 GitHub_Key_Pair.pem
 
+#		Waiting for the server to be running
+while [ "$STATE" != "running" ]
+do
+    STATE=$(aws ec2 describe-instances --filters "Name=instance-id,Values=$INSTANCE_ID" | jq -r '.Reservations[0].Instances[0].State.Name')
+	echo "Waiting for server to run | Server state: $STATE"
+	sleep 1
+done
+echo "Server started"
+
 #	Upload file to EC2 server
 sftp -i GitHub_Key_Pair.pem  -o StrictHostKeyChecking=no ec2-user@$IP_ADDRESS << EOF
 	put code.zip
