@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #	Install dependencies
-sudo yum -y install jq zip
+sudo yum install jq zip -y
 
 #	Create zip file
 zip -r code.zip .
@@ -23,8 +23,8 @@ EOF
 
 #	Create the deployment package
 ssh ec2-user@$IP_ADDRESS -i GitHub_Key_Pair.pem -o StrictHostKeyChecking=no << EOF
-	sudo yum -y install zip unzip
-	sudo yum -y install python3 pip3
+	sudo yum install zip unzip -y
+	sudo yum install python3 pip3 -y
 
 	unzip code.zip
 	rm code.zip
