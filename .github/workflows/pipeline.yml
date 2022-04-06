@@ -27,7 +27,6 @@ jobs:
 
       # Set up required applications
       - run: sudo apt-get install zip
-      - run: sudo apt-get install unzip
       - run: sudo apt-get install awscli
 
       # Setup dependencies
