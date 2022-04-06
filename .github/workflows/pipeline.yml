@@ -33,8 +33,8 @@ jobs:
       # Setup dependencies
       - run: wget https://github.com/Kontinuum-Investment-Holdings/KIH_API/archive/refs/heads/main.zip
       - run: unzip main.zip -d .
-      - run: pip install -r requirements.txt --target .
-      - run: pip install -r KIH_API-main/requirements.txt --target .
+      - run: "pip install --no-binary :all: -r requirements.txt --target ."
+      - run: "pip install --no-binary :all: -r KIH_API-main/requirements.txt --target ."
       - run: mv KIH_API-main/* .
 
       # Clean up and create ZIP file
