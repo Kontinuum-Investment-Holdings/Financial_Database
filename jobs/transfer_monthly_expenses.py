@@ -11,7 +11,7 @@ import constants
 
 @global_common.threaded
 @global_common.job("Organising Monthly Expenses")
-def do() -> None:
+def do(event: None, context: None) -> None:
     finance_database: FinanceDatabase = FinanceDatabase(constants.LOCATION_OF_FINANCIAL_DATABASE_FILE)
 
     nzd_account_balance: AccountBalance = AccountBalance.get_by_currency_and_profile_type(Currency.NZD, ProfileTypes.PERSONAL)
@@ -27,4 +27,4 @@ def do() -> None:
 
 
 if __name__ == "__main__":
-    do()
+    do(None, None)
