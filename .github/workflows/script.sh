@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #	Install dependencies
-sudo yum -y install awscli
 sudo yum -y install jq
 sudo yum -y install zip
 
@@ -28,7 +27,7 @@ ssh ec2-user@$IP_ADDRESS -i GitHub_Key_Pair.pem -o StrictHostKeyChecking=no << E
 	sudo yum -y install zip
 	sudo yum -y install unzip
 	sudo yum -y install python
-	sudo yum -y install python-pip
+	sudo yum -y install python3-pip
 
 	unzip code.zip
 	rm code.zip
