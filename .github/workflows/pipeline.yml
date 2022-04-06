@@ -3,7 +3,7 @@ name: deploy_to_lambda
 on:
   push:
     branches:
-      - main
+      - master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,14 +30,19 @@ jobs:
       - run: sudo apt-get install unzip
       - run: sudo apt-get install awscli
 
-      #       Setup dependencies
-      - run: mkdir python
-      - run: pip install -r requirements.txt -t python
-      - run: zip -r layer.zip python
-      - run: aws lambda publish-layer-version --layer-name $LAMBDA_FUNCTION_NAMES-layer --zip-file fileb://layer.zip --compatible-runtimes python3.9
-      - run: for function in $LAMBDA_FUNCTION_NAMES; do aws lambda publish-layer-version --layer-name $function-layer --zip-file fileb://layer.zip --compatible-runtimes python3.9; done
-      - run: rm -rf python && rm layer.zip
+      # Setup dependencies
+      - run: wget https://github.com/Kontinuum-Investment-Holdings/KIH_API/archive/refs/heads/main.zip
+      - run: unzip main.zip -d .
+      - run: pip install -r requirements.txt --target .
+      - run: pip install -r KIH_API-main/requirements.txt --target .
+      - run: mv KIH_API-main/* .
 
-      #       Package and deploy code
+      # Clean up and create ZIP file
+      - run: rm main.zip
+      - run: rm -rf KIH_API-main
+      - run: rm requirements.txt && rm -rf .github && rm mypy.ini && rm -rf __pycache__ && rm -rf .git
       - run: zip -r code.zip .
+
+      # Deploy to AWS Lambda
+      - run: sudo apt-get install awscli
       - run: for function in $LAMBDA_FUNCTION_NAMES; do aws lambda update-function-code --function-name $function --zip-file fileb://code.zip; done
