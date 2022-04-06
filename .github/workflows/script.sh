@@ -1,8 +1,7 @@
 #!/bin/bash
 
 #	Install dependencies
-sudo yum -y install jq
-sudo yum -y install zip
+sudo yum -y install jq zip
 
 #	Create zip file
 zip -r code.zip .
@@ -24,18 +23,16 @@ EOF
 
 #	Create the deployment package
 ssh ec2-user@$IP_ADDRESS -i GitHub_Key_Pair.pem -o StrictHostKeyChecking=no << EOF
-	sudo yum -y install zip
-	sudo yum -y install unzip
-	sudo yum -y install python
-	sudo yum -y install python3-pip
+	sudo yum -y install zip unzip
+	sudo yum -y install python3 pip3
 
 	unzip code.zip
 	rm code.zip
 
 	wget https://github.com/Kontinuum-Investment-Holdings/KIH_API/archive/refs/heads/main.zip
 	unzip main.zip -d .
-	pip install -r requirements.txt -t .
-	pip install -r KIH_API-main/requirements.txt -t .
+	pip3 install -r requirements.txt -t .
+	pip3 install -r KIH_API-main/requirements.txt -t .
 	mv KIH_API-main/* .
 
 	rm main.zip
