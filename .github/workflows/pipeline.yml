@@ -41,6 +41,7 @@ jobs:
       - run: rm main.zip
       - run: rm -rf KIH_API-main
       - run: rm requirements.txt && rm -rf .github && rm mypy.ini && rm -rf .git
+      - run: rm -r *.dist-info __pycache__
       - run: zip -r code.zip .
 
       # Deploy to AWS Lambda
