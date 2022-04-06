@@ -63,4 +63,10 @@ EOF
 aws ec2 terminate-instances --instance-ids $INSTANCE_ID
 
 # Upload script to Lambda Function
-for function in $LAMBDA_FUNCTION_NAMES; do aws lambda update-function-code --function-name $function --zip-file fileb://code.zip; done
+for function in $LAMBDA_FUNCTION_NAMES
+do
+  mv code.zip $function.zip
+  aws s3 cp $function.zip s3://kih-github/code/
+  aws lambda update-function-code --function-name $function --s3-bucket s3://kih-github/code/$function.zip
+  mv $function.zip code.zip
+done
