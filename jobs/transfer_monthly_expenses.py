@@ -9,7 +9,6 @@ from wise.models import Transfer, ProfileTypes, AccountBalance
 import constants
 
 
-@global_common.threaded
 @global_common.job("Organising Monthly Expenses")
 def do(event: None, context: None) -> None:
     finance_database: FinanceDatabase = FinanceDatabase(constants.LOCATION_OF_FINANCIAL_DATABASE_FILE)
