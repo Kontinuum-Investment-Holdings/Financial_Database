@@ -1,10 +1,10 @@
 from decimal import Decimal
 
-import global_common
-from finance_database import FinanceDatabase
-from finance_database.exceptions import InsufficientFundsException
-from global_common import Currency
-from wise.models import Transfer, ProfileTypes, CashAccount, ReserveAccount, IntraAccountTransfer
+from kih_api import global_common
+from kih_api.finance_database import FinanceDatabase
+from kih_api.finance_database.exceptions import InsufficientFundsException
+from kih_api.global_common import Currency
+from kih_api.wise.models import Transfer, ProfileTypes, CashAccount, ReserveAccount, IntraAccountTransfer
 
 import constants
 
