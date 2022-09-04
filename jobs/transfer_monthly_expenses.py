@@ -29,11 +29,11 @@ def do(event: None, context: None) -> None:
 
     for name, amount in finance_database.reserve.needs_reserve.expenses.items():
         reserve_account = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileTypes.PERSONAL, Currency.NZD, f"{name} [Needs Reserve]", True)
-        intra_account_transfer = IntraAccountTransfer.execute(amount, Currency.NZD, reserve_account, ProfileTypes.PERSONAL)
+        intra_account_transfer = IntraAccountTransfer.execute(amount, nzd_account, reserve_account, ProfileTypes.PERSONAL)
 
     for name, amount in finance_database.reserve.wants_reserve.expenses.items():
         reserve_account = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileTypes.PERSONAL, Currency.NZD, f"{name} [Wants Reserve]", True)
-        intra_account_transfer = IntraAccountTransfer.execute(amount, Currency.NZD, reserve_account, ProfileTypes.PERSONAL)
+        intra_account_transfer = IntraAccountTransfer.execute(amount, nzd_account, reserve_account, ProfileTypes.PERSONAL)
 
 
 if __name__ == "__main__":
