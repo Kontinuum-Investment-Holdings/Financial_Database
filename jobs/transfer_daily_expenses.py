@@ -3,6 +3,7 @@ import datetime
 from decimal import Decimal
 
 import kih_api.wise.models
+from azure import functions
 from kih_api.communication import telegram
 from kih_api.finance_database import FinanceDatabase
 from kih_api.global_common import Currency
@@ -30,6 +31,9 @@ def do():
                                             f"<u><b>Monthly Expenses Notification</b></u>"
                                             f"\nAmount over budget: <i>${kih_api.global_common.get_formatted_string_from_decimal(daily_expense_budget - amount_to_transfer, 2)}</i>", True)
 
+
+def main(mytimer: functions.TimerRequest) -> None:
+    do()
 
 if __name__ == "__main__":
     do()
