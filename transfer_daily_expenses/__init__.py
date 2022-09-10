@@ -2,9 +2,10 @@ import calendar
 import datetime
 from decimal import Decimal
 
-import azure.functions as func
 import kih_api.wise.models
 import pytz
+from azure import functions
+from kih_api import global_common
 from kih_api.communication import telegram
 from kih_api.finance_database import FinanceDatabase
 from kih_api.global_common import Currency
@@ -13,11 +14,15 @@ from kih_api.wise.models import CashAccount, ProfileTypes, ReserveAccount
 import constants
 
 
-def main(mytimer: func.TimerRequest):
+def main(timer: functions.TimerRequest) -> None:
+    do()
+
+@global_common.job("Organising Daily Expenses")
+def do() -> None:
     new_zealand_datetime: datetime.datetime = datetime.datetime.now(pytz.timezone("Pacific/Auckland"))
     finance_database: FinanceDatabase = FinanceDatabase(constants.LOCATION_OF_FINANCIAL_DATABASE_FILE, new_zealand_datetime)
     nzd_account: CashAccount = CashAccount.get_by_profile_type_and_currency(ProfileTypes.PERSONAL, Currency.NZD)
-    monthly_expenses_reserve_account: ReserveAccount = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileTypes.PERSONAL, Currency.NZD, "Monthly Expenses", False)
+    monthly_expenses_reserve_account: ReserveAccount = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileTypes.PERSONAL, Currency.NZD, constants.MONTHLY_EXPENSES_RESERVE_ACCOUNT_NAME, False)
 
     monthly_expenses_budget: Decimal = finance_database.transfers.wants.amount
     number_of_days_in_this_month: Decimal = Decimal(str(calendar.monthrange(new_zealand_datetime.date().year, new_zealand_datetime.month)[1]))
