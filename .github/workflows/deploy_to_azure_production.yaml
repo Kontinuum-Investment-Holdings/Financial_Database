@@ -1,12 +1,12 @@
-name: Deploy to Azure Functions [Development]
+name: Deploy to Azure Functions [Production]
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 env:
-  AZURE_FUNCTIONAPP_NAME: financial-database-development
+  AZURE_FUNCTIONAPP_NAME: financial-database-production
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   PYTHON_VERSION: '3.9'
 
@@ -34,4 +34,4 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_DEVELOPMENT }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_PRODUCTION }}
