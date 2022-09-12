@@ -27,7 +27,7 @@ def do() -> None:
     monthly_expenses_budget: Decimal = finance_database.transfers.wants.amount
     number_of_days_in_this_month: Decimal = Decimal(str(calendar.monthrange(new_zealand_datetime.date().year, new_zealand_datetime.month)[1]))
     daily_expense_budget: Decimal = (monthly_expenses_budget / number_of_days_in_this_month).quantize(Decimal('1.00'))
-    number_of_days_till_end_of_month: Decimal = number_of_days_in_this_month - Decimal(new_zealand_datetime.day) + Decimal("1")
+    number_of_days_till_end_of_month: Decimal = number_of_days_in_this_month - Decimal(new_zealand_datetime.day)
     remaining_monthly_expense_budget: Decimal = (daily_expense_budget * number_of_days_till_end_of_month).quantize(Decimal('1.00'))
     amount_to_transfer: Decimal = monthly_expenses_reserve_account.balance - remaining_monthly_expense_budget
 
