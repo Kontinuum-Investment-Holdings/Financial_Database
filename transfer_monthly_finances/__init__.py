@@ -1,14 +1,14 @@
 from decimal import Decimal
-from typing import Optional
 
 from azure import functions
 from kih_api import global_common
 from kih_api.finance_database import FinanceDatabase
 from kih_api.finance_database.exceptions import InsufficientFundsException
 from kih_api.global_common import Currency
-from kih_api.wise.models import Transfer, ProfileTypes, CashAccount, ReserveAccount, IntraAccountTransfer
+from kih_api.wise.models import CashAccount, ProfileTypes, Transfer, ReserveAccount, IntraAccountTransfer
 
 import constants
+
 
 def main(timer: functions.TimerRequest) -> None:
     do()
