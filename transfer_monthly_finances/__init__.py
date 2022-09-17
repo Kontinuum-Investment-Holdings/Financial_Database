@@ -1,3 +1,4 @@
+import datetime
 from decimal import Decimal
 
 from azure import functions
@@ -11,7 +12,12 @@ import constants
 
 
 def main(timer: functions.TimerRequest) -> None:
+    if not is_today_last_day_of_month():
+        return
     do()
+
+def is_today_last_day_of_month() -> bool:
+    return (datetime.date.today() + datetime.timedelta(days=1)).day == 1
 
 @global_common.job("Organising Monthly Expenses")
 def do() -> None:
