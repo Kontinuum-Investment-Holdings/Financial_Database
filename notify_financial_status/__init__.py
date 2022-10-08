@@ -15,7 +15,6 @@ from kih_api.wise.models import ProfileType, ReserveAccount, IntraAccountTransfe
 import constants
 
 override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
-telegram.constants.telegram_channel_username = "household_finances_channel"
 
 @dataclass
 class Person:
@@ -54,7 +53,7 @@ def do() -> None:
         message = message + f"Rent paid until: <i>{next_payment_due_date.strftime('%b %d, %Y')}</i>\n" \
                             f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(reserve_account.balance)}</i>"
 
-    telegram.send_message(telegram.constants.telegram_channel_username, message, True)
+    telegram.send_message(constants.HOUSEHOLD_FINANCES_CHANNEL_USERNAME, message, True)
 
 def get_next_payment_due_date(account_balance: Decimal, weekly_rent: Decimal) -> datetime.date:
     number_of_weeks_of_rent_paid: Decimal = Decimal(math.floor(account_balance / weekly_rent))

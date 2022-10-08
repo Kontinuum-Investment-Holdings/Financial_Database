@@ -32,7 +32,7 @@ def do() -> None:
                 IntraAccountTransfer.execute(transaction.transaction_amount, nzd_account, jason_smit_reserve_account, nzd_account.user_profile.type)
                 jason_smit_reserve_account = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(nzd_account.user_profile.type, nzd_account.currency, "Jason Smit [Reserve]", True)
 
-                telegram.send_message(telegram.constants.telegram_channel_username,
+                telegram.send_message(constants.HOUSEHOLD_FINANCES_CHANNEL_USERNAME,
                                       f"<b><i>Transfer Received from Jason Smit</b></i>"\
                                       f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(jason_smit_reserve_account.balance)}</i>",
                                       True)
