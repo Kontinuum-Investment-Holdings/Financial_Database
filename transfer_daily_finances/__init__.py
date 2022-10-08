@@ -9,10 +9,13 @@ from kih_api import global_common
 from kih_api.communication import telegram
 from kih_api.finance_database import FinanceDatabase
 from kih_api.global_common import Currency
+from kih_api.wise.common import override_api_key
+from kih_api.wise.constants import API_KEY
 from kih_api.wise.models import CashAccount, ProfileType, ReserveAccount
 
 import constants
 
+override_api_key(API_KEY)
 
 def main(timer: functions.TimerRequest) -> None:
     do()
