@@ -20,6 +20,7 @@ def main(timer: functions.TimerRequest) -> None:
     do()
 
 
+@global_common.job("Organize Funds")
 def do() -> None:
     nzd_account: CashAccount = CashAccount.get_by_profile_type_and_currency(ProfileType.Personal, Currency.NZD)
     transaction_list: List[Transaction] = Transaction.get_all(nzd_account, datetime.datetime.now() - datetime.timedelta(hours=1), datetime.datetime.now())

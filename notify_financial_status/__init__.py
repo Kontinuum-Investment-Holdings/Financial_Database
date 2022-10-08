@@ -31,6 +31,7 @@ class Person:
 def main(timer: func.TimerRequest) -> None:
     do()
 
+@global_common.job("Notify Financial Status")
 def do() -> None:
     nzd_account: CashAccount = CashAccount.get_by_profile_type_and_currency(ProfileType.Personal, global_common.Currency.NZD)
     persons_list: List[Person] = [Person("Kavindu Athaudha", Decimal("265")), Person("Jason Smit", Decimal("265"))]
