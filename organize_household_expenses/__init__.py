@@ -14,8 +14,6 @@ from kih_api.wise.models import ProfileType, ReserveAccount, IntraAccountTransfe
 
 import constants
 
-override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
-
 @dataclass
 class Person:
     name: str
@@ -28,9 +26,10 @@ class Person:
         self.wise_jar_name = self.name + " [Rent]" if wise_jar_name is None else wise_jar_name
 
 def main(timer: func.TimerRequest) -> None:
+    override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
     do()
 
-@global_common.job("Notify Financial Status")
+@global_common.job("Organize Household Expenses")
 def do() -> None:
     nzd_account: CashAccount = CashAccount.get_by_profile_type_and_currency(ProfileType.Personal, global_common.Currency.NZD)
     persons_list: List[Person] = [Person("Kavindu Athaudha", Decimal("265")), Person("Jason Smit", Decimal("265"))]

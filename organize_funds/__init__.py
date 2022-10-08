@@ -13,9 +13,8 @@ from kih_api.wise.models import CashAccount, ProfileType, ReserveAccount, Transa
 import constants
 
 
-override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
-
 def main(timer: functions.TimerRequest) -> None:
+    override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
     do()
 
 

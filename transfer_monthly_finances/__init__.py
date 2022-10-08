@@ -11,11 +11,11 @@ from kih_api.wise.models import CashAccount, ProfileType, Transfer, ReserveAccou
 
 import constants
 
-override_api_key("TRANSFER_WISE_API_KEY")
-
 def main(timer: functions.TimerRequest) -> None:
     if not is_today_last_day_of_month():
         return
+
+    override_api_key("TRANSFER_WISE_API_KEY")
     do()
 
 def is_today_last_day_of_month() -> bool:

@@ -14,9 +14,8 @@ from kih_api.wise.models import CashAccount, ProfileType, ReserveAccount
 
 import constants
 
-override_api_key("TRANSFER_WISE_API_KEY")
-
 def main(timer: functions.TimerRequest) -> None:
+    override_api_key("TRANSFER_WISE_API_KEY")
     do()
 
 @global_common.job("Organising Daily Finances")
