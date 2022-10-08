@@ -7,12 +7,11 @@ from kih_api.finance_database import FinanceDatabase
 from kih_api.finance_database.exceptions import InsufficientFundsException
 from kih_api.global_common import Currency
 from kih_api.wise.common import override_api_key
-from kih_api.wise.constants import API_KEY
 from kih_api.wise.models import CashAccount, ProfileType, Transfer, ReserveAccount, IntraAccountTransfer
 
 import constants
 
-override_api_key(API_KEY)
+override_api_key("TRANSFER_WISE_API_KEY")
 
 def main(timer: functions.TimerRequest) -> None:
     if not is_today_last_day_of_month():
