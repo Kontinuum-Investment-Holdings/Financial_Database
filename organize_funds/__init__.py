@@ -14,7 +14,6 @@ import constants
 
 
 override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
-telegram.constants.telegram_channel_username = "household_finances_channel"
 
 def main(timer: functions.TimerRequest) -> None:
     do()
