@@ -49,5 +49,3 @@ def _transfer_to_reserve_accounts(nzd_account: CashAccount, financial_database: 
     nzd_account = CashAccount.get_by_profile_type_and_currency(ProfileType.Personal, Currency.NZD)
     monthly_expenses_reserve_account: ReserveAccount = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileType.Personal, Currency.NZD, constants.MONTHLY_EXPENSES_RESERVE_ACCOUNT_NAME, True)
     intra_account_transfer = IntraAccountTransfer.execute(nzd_account.balance, nzd_account, monthly_expenses_reserve_account, ProfileType.Personal)
-
-do()
