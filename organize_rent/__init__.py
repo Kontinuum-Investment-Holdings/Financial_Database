@@ -1,6 +1,4 @@
-import calendar
 import datetime
-import logging
 import math
 from dataclasses import dataclass
 from decimal import Decimal
@@ -9,10 +7,10 @@ from typing import List
 import azure.functions as func
 from kih_api import global_common
 from kih_api.communication import telegram
-from kih_api.wise.common import override_api_key
-from kih_api.wise.models import ProfileType, ReserveAccount, IntraAccountTransfer, CashAccount
+from kih_api.wise.models import ProfileType, ReserveAccount, CashAccount, WiseAccount
 
 import constants
+
 
 @dataclass
 class Person:
@@ -26,17 +24,17 @@ class Person:
         self.wise_jar_name = self.name + " [Rent]" if wise_jar_name is None else wise_jar_name
 
 def main(timer: func.TimerRequest) -> None:
-    override_api_key(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY)
     do()
 
-@global_common.job("Organize Household Expenses")
+@global_common.job("Organize Rent")
 def do() -> None:
-    nzd_account: CashAccount = CashAccount.get_by_profile_type_and_currency(ProfileType.Personal, global_common.Currency.NZD)
+    wise_account: WiseAccount = WiseAccount(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY, ProfileType.Personal)
+    nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
     persons_list: List[Person] = [Person("Kavindu Athaudha", Decimal("265")), Person("Jason Smit", Decimal("265"))]
     message = "<b><i>Rent notification</i></b>"
 
     for person in persons_list:
-        reserve_account: ReserveAccount = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileType.Personal, global_common.Currency.NZD, person.wise_jar_name, False)
+        reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, person.wise_jar_name, True)
         message = f"{message} \n\n<i><u>{person.name}</u></i>\n"
 
         if reserve_account.balance < person.rent:
@@ -45,8 +43,7 @@ def do() -> None:
                                 f"Minimum amount required: <i>${global_common.get_formatted_string_from_decimal(person.rent - reserve_account.balance)}</i>"
             continue
 
-        IntraAccountTransfer.execute(person.rent, reserve_account, nzd_account, ProfileType.Personal)
-        reserve_account = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileType.Personal, global_common.Currency.NZD, person.wise_jar_name, False)
+        reserve_account.intra_account_transfer(nzd_account, person.rent)
         next_payment_due_date: datetime.date = get_next_payment_due_date(reserve_account.balance, person.rent)
 
         message = message + f"Rent paid until: <i>{next_payment_due_date.strftime('%b %d, %Y')}</i>\n" \
