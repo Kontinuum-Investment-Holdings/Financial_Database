@@ -22,7 +22,7 @@ def do() -> None:
 
     for transaction in transaction_list:
         if isinstance(transaction.entity, str) and transaction.transaction_type == TransactionType.Transfer and transaction.transaction_amount > Decimal("0"):
-            if "Smit".lower() in transaction.entity.lower():
+            if isinstance(transaction.entity, str) and "Smit".lower() in transaction.entity.lower():
                 jason_smit_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, "Jason Smit [Rent]")
                 nzd_account.intra_account_transfer(jason_smit_reserve_account, transaction.transaction_amount)
 
