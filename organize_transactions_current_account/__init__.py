@@ -29,4 +29,4 @@ def _organize_salary(wise_account: WiseAccount, transaction: Transaction) -> Non
 
     nzd_account.intra_account_transfer(salary_reserve_account, transaction.transaction_amount - financial_database.monthly_expenses_report.savings)
     savings_recipient: Recipient = wise_account.get_recipient_by_account_number(financial_database.transfers.savings.account_number)
-    savings_transfer: Transfer = nzd_account.transfer(savings_recipient,financial_database.transfers.savings.amount)
+    savings_transfer: Transfer = nzd_account.transfer(savings_recipient, financial_database.transfers.savings.amount, "U9850095", receiving_amount_currency=nzd_account.currency)
