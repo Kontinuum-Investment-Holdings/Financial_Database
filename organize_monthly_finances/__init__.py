@@ -58,7 +58,7 @@ def _transfer_to_reserve_accounts(wise_account: WiseAccount, financial_database:
 
     for name, amount in financial_database.reserve.wants_reserve.expenses.items():
         reserve_account = wise_account.get_reserve_account(nzd_account.currency, f"{name} [Wants Reserve]", True)
-        intra_account_transfer: IntraAccountTransfer = nzd_account.intra_account_transfer(reserve_account, amount)
+        intra_account_transfer = nzd_account.intra_account_transfer(reserve_account, amount)
 
     monthly_expenses_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, constants.MONTHLY_EXPENSES_RESERVE_ACCOUNT_NAME, True)
     intra_account_transfer = nzd_account.intra_account_transfer(monthly_expenses_reserve_account, nzd_account.balance)
