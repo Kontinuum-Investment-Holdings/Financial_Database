@@ -19,7 +19,7 @@ def do() -> None:
     transaction_list: List[Transaction] = wise_account.get_all_transactions(nzd_account, datetime.datetime.now() - datetime.timedelta(hours=1), datetime.datetime.now())
 
     for transaction in transaction_list:
-        if "Chelmer".lower() in transaction.entity.lower():
+        if isinstance(transaction.entity, str) and "Chelmer".lower() in transaction.entity.lower():
             _organize_salary(wise_account, transaction)
 
 def _organize_salary(wise_account: WiseAccount, transaction: Transaction) -> None:
