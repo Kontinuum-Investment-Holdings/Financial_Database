@@ -39,29 +39,26 @@ def _withdraw_from_salary_reserve_account(wise_account: WiseAccount) -> None:
 
 def _transfer_to_cash_accounts(wise_account: WiseAccount, financial_database: FinanceDatabase) -> None:
     nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
-    excess_funds: Decimal = nzd_account.balance - financial_database.summary.salary
+    excess_funds: Decimal = nzd_account.balance - (financial_database.summary.salary - financial_database.transfers.savings.amount)
     finance_hub_recipient: Recipient = wise_account.get_recipient_by_account_number(financial_database.transfers.finance_hub.account_number)
     savings_recipient: Recipient = wise_account.get_recipient_by_account_number(financial_database.transfers.savings.account_number)
 
     if excess_funds < 0:
         raise InsufficientFundsException(f"Insufficient funds for monthly expenses\nRequired: NZD {str(financial_database.summary.salary)}\nContains: NZD {str(nzd_account.balance)}\nShort of: NZD {str(-excess_funds)}")
 
-    finance_hub_transfer: Transfer = nzd_account.transfer(finance_hub_recipient, financial_database.transfers.finance_hub.amount, "Monthly Expenses")
-    savings_transfer: Transfer = nzd_account.transfer(savings_recipient, excess_funds)
+    finance_hub_transfer: Transfer = nzd_account.transfer(finance_hub_recipient, financial_database.transfers.finance_hub.amount)
+    savings_transfer: Transfer = nzd_account.transfer(savings_recipient, excess_funds, "U9850095", receiving_amount_currency=nzd_account.currency)
 
 def _transfer_to_reserve_accounts(wise_account: WiseAccount, financial_database: FinanceDatabase) -> None:
     nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
 
-    if financial_database.transfers.needs.amount > 0:
-        needs_transfer: Transfer = Transfer.execute(financial_database.transfers.needs.amount, Currency.NZD, Currency.NZD, financial_database.transfers.needs.account_number, "Needs", ProfileType.Personal)
-
     for name, amount in financial_database.reserve.needs_reserve.expenses.items():
-        reserve_account: ReserveAccount = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileType.Personal, Currency.NZD, f"{name} [Needs Reserve]", True)
-        intra_account_transfer: IntraAccountTransfer = IntraAccountTransfer.execute(amount, nzd_account, reserve_account, ProfileType.Personal)
+        reserve_account: ReserveAccount = wise_account.get_reserve_account(nzd_account.currency, f"{name} [Needs Reserve]", True)
+        intra_account_transfer: IntraAccountTransfer = nzd_account.intra_account_transfer(reserve_account, amount)
 
     for name, amount in financial_database.reserve.wants_reserve.expenses.items():
-        reserve_account = ReserveAccount.get_reserve_account_by_profile_type_currency_and_name(ProfileType.Personal, Currency.NZD, f"{name} [Wants Reserve]", True)
-        intra_account_transfer = IntraAccountTransfer.execute(amount, nzd_account, reserve_account, ProfileType.Personal)
+        reserve_account = wise_account.get_reserve_account(nzd_account.currency, f"{name} [Wants Reserve]", True)
+        intra_account_transfer: IntraAccountTransfer = nzd_account.intra_account_transfer(reserve_account, amount)
 
     monthly_expenses_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, constants.MONTHLY_EXPENSES_RESERVE_ACCOUNT_NAME, True)
     intra_account_transfer = nzd_account.intra_account_transfer(monthly_expenses_reserve_account, nzd_account.balance)
