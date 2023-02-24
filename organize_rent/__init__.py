@@ -23,8 +23,10 @@ class Person:
         self.rent = rent
         self.wise_jar_name = self.name + " [Rent]" if wise_jar_name is None else wise_jar_name
 
+
 def main(timer: func.TimerRequest) -> None:
     do()
+
 
 @global_common.job("Organize Rent")
 def do() -> None:
@@ -39,7 +41,7 @@ def do() -> None:
 
         if reserve_account.balance < person.rent:
             message = message + f"Insufficient funds for the rent\n" \
-                                f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(reserve_account.balance)}</i>\n"\
+                                f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(reserve_account.balance)}</i>\n" \
                                 f"Minimum amount required: <i>${global_common.get_formatted_string_from_decimal(person.rent - reserve_account.balance)}</i>"
             continue
 
@@ -51,9 +53,11 @@ def do() -> None:
 
     telegram.send_message(constants.HOUSEHOLD_FINANCES_CHANNEL_USERNAME, message, True)
 
+
 def get_next_payment_due_date(account_balance: Decimal, weekly_rent: Decimal) -> datetime.date:
     number_of_weeks_of_rent_paid: Decimal = Decimal(math.floor(account_balance / weekly_rent))
     return get_next_rent_payment_date(datetime.date.today(), 0) + datetime.timedelta(weeks=int(number_of_weeks_of_rent_paid))
+
 
 def get_next_rent_payment_date(from_date: datetime.date, payment_day_of_week: int) -> datetime.date:
     next_rent_payment_date: datetime.date = from_date

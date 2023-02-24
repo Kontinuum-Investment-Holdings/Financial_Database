@@ -17,6 +17,7 @@ import constants
 def main(timer: functions.TimerRequest) -> None:
     do()
 
+
 @global_common.job("Organize Daily Finances")
 def do() -> None:
     wise_account: WiseAccount = WiseAccount(constants.TRANSFER_WISE_CURRENT_ACCOUNT_API_KEY_ENVIRONMENT_VARIABLE_KEY, ProfileType.Personal)
@@ -39,7 +40,7 @@ def do() -> None:
         date_of_budget_reached: datetime.datetime = new_zealand_datetime + datetime.timedelta(days=number_of_days_till_budget_is_reached)
 
         telegram.send_message(telegram.constants.telegram_channel_username,
-                                            f"<u><b>Monthly Expenses Notification</b></u>"
-                                            f"\nAmount over budget: <i>${kih_api.global_common.get_formatted_string_from_decimal(amount_over_budget, 2)}</i>"
-                                            f"\nTime until budget is reached: <i>{str(number_of_days_till_budget_is_reached)} days</i>"
-                                            f"\nDate when budget is reached: <i>{date_of_budget_reached.strftime('%b %d, %Y')}</i>", True)
+                              f"<u><b>Monthly Expenses Notification</b></u>"
+                              f"\nAmount over budget: <i>${kih_api.global_common.get_formatted_string_from_decimal(amount_over_budget, 2)}</i>"
+                              f"\nTime until budget is reached: <i>{str(number_of_days_till_budget_is_reached)} days</i>"
+                              f"\nDate when budget is reached: <i>{date_of_budget_reached.strftime('%b %d, %Y')}</i>", True)

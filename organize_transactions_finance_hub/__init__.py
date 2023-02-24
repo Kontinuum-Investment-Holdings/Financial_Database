@@ -27,6 +27,6 @@ def do() -> None:
                 nzd_account.intra_account_transfer(jason_smit_reserve_account, transaction.transaction_amount)
 
                 telegram.send_message(constants.HOUSEHOLD_FINANCES_CHANNEL_USERNAME,
-                                      f"<b><i>Transfer Received from Jason Smit</b></i>"\
+                                      f"<b><i>Transfer Received from Jason Smit</b></i>" \
                                       f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(jason_smit_reserve_account.balance)}</i>",
                                       True)

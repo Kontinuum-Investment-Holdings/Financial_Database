@@ -12,6 +12,7 @@ import constants
 def main(timer: func.TimerRequest) -> None:
     do()
 
+
 @global_common.job("Organize Transactions [Current Account]")
 def do() -> None:
     wise_account: WiseAccount = WiseAccount(constants.TRANSFER_WISE_CURRENT_ACCOUNT_API_KEY_ENVIRONMENT_VARIABLE_KEY, ProfileType.Personal)
@@ -22,6 +23,7 @@ def do() -> None:
         if isinstance(transaction.entity, str) and "Chelmer".lower() in transaction.entity.lower():
             _organize_salary(wise_account, transaction)
 
+
 def _organize_salary(wise_account: WiseAccount, transaction: Transaction) -> None:
     nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
     salary_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, constants.SALARY_RESERVE_ACCOUNT_NAME, True)
@@ -29,4 +31,4 @@ def _organize_salary(wise_account: WiseAccount, transaction: Transaction) -> Non
 
     nzd_account.intra_account_transfer(salary_reserve_account, transaction.transaction_amount - financial_database.monthly_expenses_report.savings)
     savings_recipient: Recipient = wise_account.get_recipient_by_account_number(financial_database.transfers.savings.account_number)
-    savings_transfer: Transfer = nzd_account.transfer(savings_recipient, financial_database.transfers.savings.amount, "U9850095", receiving_amount_currency=nzd_account.currency)
+    nzd_account.transfer(savings_recipient, financial_database.transfers.savings.amount, "U9850095", receiving_amount_currency=nzd_account.currency)
