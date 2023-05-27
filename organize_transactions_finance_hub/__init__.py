@@ -22,11 +22,13 @@ def do() -> None:
 
     for transaction in transaction_list:
         if isinstance(transaction.entity, str) and transaction.transaction_type == TransactionType.Transfer and transaction.transaction_amount > Decimal("0"):
-            if isinstance(transaction.entity, str) and "Smit".lower() in transaction.entity.lower():
-                jason_smit_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, "Jason Smit [Rent]")
+            
+            # TODO: Check if the transaction surname is correct
+            if isinstance(transaction.entity, str) and "Jayasekara".lower() in transaction.entity.lower():
+                jason_smit_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, "Sayuru Jayasekara [Rent]")
                 nzd_account.intra_account_transfer(jason_smit_reserve_account, transaction.transaction_amount)
 
                 telegram.send_message(constants.HOUSEHOLD_FINANCES_CHANNEL_USERNAME,
-                                      f"<b><i>Transfer Received from Jason Smit</b></i>" \
+                                      f"<b><i>Transfer Received from Jayasekara</b></i>"
                                       f"Current account balance: <i>${global_common.get_formatted_string_from_decimal(jason_smit_reserve_account.balance)}</i>",
                                       True)

@@ -32,7 +32,7 @@ def main(timer: func.TimerRequest) -> None:
 def do() -> None:
     wise_account: WiseAccount = WiseAccount(constants.TRANSFER_WISE_FINANCE_HUB_API_KEY_ENVIRONMENT_VARIABLE_KEY, ProfileType.Personal)
     nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
-    persons_list: List[Person] = [Person("Kavindu Athaudha", Decimal("265")), Person("Jason Smit", Decimal("265"))]
+    persons_list: List[Person] = [Person("Kavindu Athaudha", Decimal("397.50")), Person("Sayuru Jayasekara", Decimal("397.50"))]
     message = "<b><i>Rent notification</i></b>"
 
     for person in persons_list:
