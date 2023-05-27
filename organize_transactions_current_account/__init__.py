@@ -27,8 +27,4 @@ def do() -> None:
 def _organize_salary(wise_account: WiseAccount, transaction: Transaction) -> None:
     nzd_account: CashAccount = wise_account.get_cash_account(global_common.Currency.NZD)
     salary_reserve_account: ReserveAccount = wise_account.get_reserve_account(global_common.Currency.NZD, constants.SALARY_RESERVE_ACCOUNT_NAME, True)
-    financial_database: FinanceDatabase = FinanceDatabase(constants.LOCATION_OF_FINANCIAL_DATABASE_FILE)
-
-    nzd_account.intra_account_transfer(salary_reserve_account, transaction.transaction_amount - financial_database.monthly_expenses_report.savings)
-    savings_recipient: Recipient = wise_account.get_recipient_by_account_number(financial_database.transfers.savings.account_number)
-    nzd_account.transfer(savings_recipient, financial_database.transfers.savings.amount, "U9850095", receiving_amount_currency=nzd_account.currency)
+    nzd_account.intra_account_transfer(salary_reserve_account, transaction.transaction_amount)
