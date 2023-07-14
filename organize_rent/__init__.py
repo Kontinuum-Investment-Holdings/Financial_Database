@@ -56,7 +56,7 @@ def do() -> None:
 
 def get_next_payment_due_date(account_balance: Decimal, weekly_rent: Decimal) -> datetime.date:
     number_of_weeks_of_rent_paid: Decimal = Decimal(math.floor(account_balance / weekly_rent))
-    return get_next_rent_payment_date(datetime.date.today(), 0) + datetime.timedelta(weeks=int(number_of_weeks_of_rent_paid))
+    return get_next_rent_payment_date(datetime.date.today(), 3) + datetime.timedelta(weeks=int(number_of_weeks_of_rent_paid))
 
 
 def get_next_rent_payment_date(from_date: datetime.date, payment_day_of_week: int) -> datetime.date:
